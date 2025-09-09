@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tes Geolokasi Akurasi Tinggi</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+        padding: 20px;
+        line-height: 1.6;
+      }
+      #container {
+        max-width: 600px;
+        margin: auto;
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333;
+      }
+      button {
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      #status {
+        margin-top: 15px;
+        font-weight: bold;
+      }
+      #hasil {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+      }
+      strong {
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <h1>Demo Geolokasi Akurasi Tinggi</h1>
+      <p>
+        Klik tombol untuk mendapatkan lokasi seakurat mungkin. Ini mungkin akan
+        memakan waktu lebih lama.
+      </p>
+      <p>
+        <b>Tips:</b> Hasil terbaik didapat pada ponsel dengan GPS aktif dan
+        koneksi Wi-Fi.
+      </p>
+
+      <button id="tombolLokasi">Dapatkan Lokasi Akurat</button>
+
+      <div id="status"></div>
+      <div id="hasil">Menunggu data lokasi...</div>
+    </div>
+
+    <script>
+      const tombolLokasi = document.getElementById("tombolLokasi");
+      const statusDiv = document.getElementById("status");
+      const hasilDiv = document.getElementById("hasil");
+
+      tombolLokasi.addEventListener("click", () => {
+        ambilLokasi();
+      });
+
+      function ambilLokasi() {
+        if (navigator.geolocation) {
+          statusDiv.textContent =
+            "Meminta lokasi dengan akurasi tinggi... (Mungkin perlu beberapa saat)";
+          statusDiv.style.color = "blue";
+
+          // --- INI BAGIAN PENTINGNYA ---
+          const options = {
+            enableHighAccuracy: true, // Meminta hasil seakurat mungkin
+            timeout: 10000, // Waktu tunggu maksimum 10 detik
+            maximumAge: 0, // Tidak menggunakan cache, cari lokasi baru
+          };
+
+          navigator.geolocation.getCurrentPosition(
+            fungsiSukses,
+            fungsiGagal,
+            options
+          );
+        } else {
+          statusDiv.textContent =
+            "Maaf, browser Anda tidak mendukung Geolokasi.";
+          statusDiv.style.color = "red";
+        }
+      }
+
+      function fungsiSukses(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        const akurasi = position.coords.accuracy;
+
+        statusDiv.textContent = "Lokasi berhasil didapatkan!";
+        statusDiv.style.color = "green";
+
+        let warnaAkurasi = "red";
+        if (akurasi < 50) warnaAkurasi = "green";
+        else if (akurasi < 500) warnaAkurasi = "orange";
+
+        hasilDiv.innerHTML = `
+            <strong>Latitude:</strong> ${latitude.toFixed(6)} <br>
+            <strong>Longitude:</strong> ${longitude.toFixed(6)} <br>
+            <strong>Akurasi:</strong> <span style="color:${warnaAkurasi}; font-weight:bold;">sekitar ${akurasi.toFixed(
+          2
+        )} meter.</span>
+        `;
+      }
+
+      function fungsiGagal(error) {
+        statusDiv.textContent = "Gagal mengambil lokasi.";
+        statusDiv.style.color = "red";
+
+        let pesanError;
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            pesanError =
+              "Izin untuk mengakses lokasi ditolak. Harap izinkan akses lokasi di pengaturan browser Anda.";
+            break;
+          case error.POSITION_UNAVAILABLE:
+            pesanError =
+              "Informasi lokasi tidak tersedia. Pastikan GPS atau Wi-Fi aktif.";
+            break;
+          case error.TIMEOUT:
+            pesanError =
+              "Waktu permintaan habis. Gagal mendapatkan sinyal GPS atau lokasi dalam 10 detik.";
+            break;
+          case error.UNKNOWN_ERROR:
+            pesanError = "Terjadi kesalahan yang tidak diketahui.";
+            break;
+        }
+        hasilDiv.textContent = pesanError;
+      }
+    </script>
+  </body>
+</html>

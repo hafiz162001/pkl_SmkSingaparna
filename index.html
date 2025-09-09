@@ -1,0 +1,2239 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portal PKL SMK Singaparna 2025</title>
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgsesgQ6we-KVoA_4nGA6DWuwsXMZsL4GVOwa8keC5SjxS3-GBf9HG8U_qzGDMV1gl2WOzjcWxNepKZebsJqc18viZ2zv43yu47RPe9cCRKdtkE0eAWe_lzsc0F-oSMHb5qSc0I6TiAnL_S11_2-EFTcbr0MQoH_L6zgeC0-Pd0v5R-p6GRO4S4ssXnYvQ/s320/Thumbail%20PKL.png"
+      type="image/png"
+    />
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              // Custom colors for the school portal
+              primary: "#0D47A1", // Dark, professional blue
+              accent: "#FFC107", // Bright amber/yellow
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      @layer utilities {
+        /* General Button Styles */
+        .btn-primary {
+          @apply bg-primary hover:bg-[#0b3a82] text-white font-medium py-2 px-4 rounded transition-colors;
+        }
+        .btn-outline {
+          @apply border border-primary text-primary hover:bg-primary hover:text-white font-medium py-2 px-4 rounded transition-colors;
+        }
+
+        .accordion-question.open svg {
+          transform: rotate(180deg);
+        }
+
+        .report-card {
+          @apply relative block w-full h-48 sm:h-56 rounded-xl overflow-hidden bg-cover bg-center text-white shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-blue-500/20;
+        }
+        .report-card-overlay {
+          @apply absolute inset-0 flex flex-col items-start justify-end p-4 bg-gradient-to-t from-black/80 via-black/30 to-transparent;
+        }
+        .report-card-title {
+          @apply font-bold text-lg tracking-wide;
+        }
+        .report-card-icon {
+          @apply text-2xl mb-2 opacity-80;
+        }
+
+        /* Modal Styles */
+        .modal {
+          @apply fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out;
+        }
+        .modal.show {
+          @apply opacity-100 pointer-events-auto;
+        }
+        .modal-content {
+          @apply bg-white rounded-lg shadow-xl max-w-md w-full mx-4 sm:mx-auto p-6 transform transition-all duration-300 ease-in-out scale-95;
+        }
+        .modal.show .modal-content {
+          @apply scale-100;
+        }
+
+        /* Accordion Styles (used for FAQ) */
+        .accordion-content {
+          transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+          overflow: hidden;
+          max-height: 0;
+          padding-top: 0;
+          padding-bottom: 0;
+        }
+        .accordion-content.open {
+          max-height: 500px; /* Sufficiently large value */
+          padding-bottom: 1rem; /* Adjust as needed */
+          padding-top: 0.5rem; /* Adjust as needed */
+        }
+        .accordion-question svg {
+          transition: transform 0.3s ease-in-out;
+        }
+        .accordion-question.open svg {
+          transform: rotate(180deg);
+        }
+      }
+      .modal-transition {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      #reportModal.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      #reportModal.active #reportModalContent {
+        transform: scale(1);
+      }
+    </style>
+    <style>
+      /* Styles for collapsible navbar */
+      #menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+      }
+
+      #menu-toggle:focus {
+        outline: none;
+      }
+
+      /* Mobile styles */
+      @media (max-width: 767px) {
+        #menu {
+          display: none;
+          flex-direction: column;
+          align-items: start;
+          width: 100%;
+          position: absolute;
+          top: 64px;
+          left: 0;
+          background-color: white;
+          padding: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #menu.active {
+          display: flex;
+        }
+
+        #menu a {
+          padding: 8px 12px;
+          display: block;
+        }
+
+        #menu a:hover {
+          background-color: #0d47a1;
+          color: white;
+          width: 100%;
+        }
+
+        .text-sm.font-medium.hover\:text-primary.block.md\:inline:hover {
+          color: #0d47a1;
+        }
+      }
+
+      /* Desktop styles */
+      @media (min-width: 768px) {
+        #menu {
+          display: flex;
+          flex-direction: row;
+          position: static;
+          width: auto;
+          background-color: transparent;
+          box-shadow: none;
+          padding: 0;
+        }
+
+        #menu a {
+          display: inline-block;
+          padding: 0;
+        }
+      }
+    </style>
+    <!-- Specific styles for Hero Carousel -->
+    <style>
+      .slider-container {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1.2; /* Mobile aspect ratio (taller) */
+        min-height: 500px; /* Ensure minimum height */
+        overflow: hidden;
+      }
+
+      @media (min-width: 768px) {
+        .slider-container {
+          aspect-ratio: 16/9; /* Desktop aspect ratio */
+          min-height: 600px; /* Adjust minimum height for desktop */
+        }
+      }
+
+      .slide-item {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.8s ease-in-out; /* Only fade transition */
+        z-index: 0; /* Default below active */
+      }
+
+      .slide-item.active {
+        opacity: 1;
+        position: relative; /* Active slide takes up space */
+        z-index: 1; /* Active slide on top */
+      }
+
+      /* Navigation buttons */
+      .slider-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+
+      .slider-nav-btn:hover {
+        background: white;
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      .slider-nav-btn.prev {
+        left: 1rem;
+      }
+
+      .slider-nav-btn.next {
+        right: 1rem;
+      }
+
+      /* Dots indicator */
+      .slider-dots {
+        position: absolute;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 0.5rem;
+        z-index: 10;
+      }
+
+      .slider-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.6);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .slider-dot.active {
+        background: white;
+        transform: scale(1.2);
+      }
+    </style>
+    <!-- NEW: Specific Styles for Gallery Carousel -->
+    <style>
+      .gallery-slider-container {
+        position: relative;
+        width: 100%;
+        max-width: 1024px; /* Limit width */
+        margin-left: auto;
+        margin-right: auto;
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+        border-radius: 0.75rem; /* rounded-xl */
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
+      }
+      .gallery-slider-container .slide-item img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen font-sans text-gray-900">
+    <!-- Header -->
+    <header class="sticky top-0 z-40 w-full border-b bg-white shadow-sm">
+      <div
+        class="container mx-auto flex h-16 items-center justify-between px-4 md:px-6"
+      >
+        <div class="flex items-center gap-2">
+          <span class="text-xl font-bold text-primary"
+            >PKL SMKS Singaparna</span
+          >
+        </div>
+
+        <nav
+          id="menu"
+          class="hidden md:flex flex-col md:flex-row bg-white md:static items-center gap-6 p-4 md:p-0"
+        >
+          <a
+            href="#beranda"
+            class="text-sm font-medium hover:text-primary block md:inline"
+            >Beranda</a
+          >
+          <a
+            href="#alur"
+            class="text-sm font-medium hover:text-primary block md:inline"
+            >Alur</a
+          >
+          <a
+            href="#mitra"
+            class="text-sm font-medium hover:text-primary block md:inline"
+            >Mitra</a
+          >
+          <a
+            href="#keunggulan"
+            class="text-sm font-medium hover:text-primary block md:inline"
+            >Keunggulan</a
+          >
+          <!-- NEW: Gallery Link -->
+          <a
+            href="#gallery"
+            class="text-sm font-medium hover:text-primary block md:inline"
+            >Galeri</a
+          >
+          <a
+            href="#faq"
+            class="text-sm font-medium hover:text-primary block md:inline"
+            >FAQ</a
+          >
+          <a
+            href="#kontak"
+            class="text-sm font-medium hover:text-primary block md:inline"
+            >Kontak</a
+          >
+        </nav>
+        <div class="flex items-center gap-4">
+          <a href="#kontak" class="btn-primary">Hubungi Kami</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section with Carousel -->
+    <section
+      id="beranda"
+      class="py-6 md:py-10 relative overflow-hidden bg-gray-100"
+    >
+      <div class="slider-container" id="hero-container">
+        <!-- Slide 1 -->
+        <div class="slide-item active">
+          <img
+            alt="Siswa-siswi SMK Singaparna siap untuk Praktik Kerja Lapangan (PKL)."
+            class="absolute inset-0 w-full h-full object-cover -z-10"
+            src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjT1A0oyTD2ZFlL9arNVteZEgtfW2lcN4ZhxmhNogL6qmn3FLGJD_iPJQWFKOLeBC6FVTz4pIo12rVDFo9jyNQR_uDQEFxByx9W_udN-h9NhQ5XQ7uqtlcoEYfdFXk-wlUPasMLV6NU9a-RpAJtuwlp_-Khty74xpivTPRYjFd8Yy1hxgOfADF0PAGAY7A/w640-h640/Gemini_Generated_Image_2ki5kd2ki5kd2ki5.jpeg"
+          />
+          <div class="absolute inset-0 bg-black opacity-70 -z-10"></div>
+
+          <div
+            class="container mx-auto px-4 md:px-20 h-full flex items-center justify-center text-center md:text-left"
+          >
+            <div class="max-w-2xl text-white">
+              <h1
+                class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl"
+              >
+                Membuka Gerbang Masa Depan:
+                <span class="text-accent">Program PKL 2025</span>
+              </h1>
+              <p class="mt-4 text-gray-300 md:text-lg lg:text-base xl:text-lg">
+                Menghubungkan siswa kompeten dari SMK Singaparna dengan Dunia
+                Usaha dan Dunia Industri (DU/DI) terkemuka.
+              </p>
+              <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:gap-4">
+                <a
+                  href="#alur"
+                  class="btn-primary px-6 py-3 rounded-md text-center font-semibold shadow-md"
+                >
+                  Lihat Alur Pendaftaran
+                </a>
+                <a
+                  href="#mitra"
+                  class="btn-outline px-6 py-3 rounded-md text-center font-semibold bg-white"
+                >
+                  Lihat Daftar Mitra
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide-item">
+          <img
+            alt="Siswa SMK Singaparna mendapatkan bimbingan langsung dari praktisi industri saat PKL"
+            class="absolute inset-0 w-full h-full object-cover -z-10"
+            src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjnIT3Mph2a8vC8r8YD7IRqH5dwcK1D_lsH8jZ66IlAWqoqLyT8B_lpZv4rePqNmp0XCJwbuWMtJ1pDulfcLZoP9zGRzHEI8TAdDTNiHR86u2B_Ns9B_H6_reUqC1kxksMWLZVOOkVgkperd75a1BQ3TVH2X5nn2U3RixKZkwak6I1OQg_3aaF4-F97Yq8/w640-h640/Gemini_Generated_Image_v2ktitv2ktitv2kt.jpeg"
+          />
+          <div class="absolute inset-0 bg-black opacity-70 -z-10"></div>
+
+          <div
+            class="container mx-auto px-4 md:px-20 h-full flex items-center justify-center text-center md:text-left"
+          >
+            <div class="max-w-2xl text-white">
+              <h1
+                class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl"
+              >
+                Pengalaman Nyata,
+                <span class="text-accent">Kompetensi Teruji</span>
+              </h1>
+              <p class="mt-4 text-gray-300 md:text-lg lg:text-base xl:text-lg">
+                Siswa kami siap berkontribusi dengan keterampilan teknis dan
+                soft skills yang relevan dengan kebutuhan industri masa kini.
+              </p>
+              <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:gap-4">
+                <a
+                  href="#alur"
+                  class="btn-primary px-6 py-3 rounded-md text-center font-semibold shadow-md"
+                >
+                  Lihat Alur Pendaftaran
+                </a>
+                <a
+                  href="#mitra"
+                  class="btn-outline px-6 py-3 rounded-md text-center font-semibold bg-white"
+                >
+                  Lihat Daftar Mitra
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide-item">
+          <img
+            alt="Kerja sama antara SMK Singaparna dengan Dunia Usaha dan Dunia Industri (DU/DI)."
+            class="absolute inset-0 w-full h-full object-cover -z-10"
+            src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpzsXBS9idr6t89k6sHjD5WYhxiU5D3SgMWkq4I222_y-aYY-Gz_bTg7mqC41cVEp9y2kLgKKII-rtUi4KifcA4R2Nheo7AfY8pDySQz10gFDE7Z6APRt2MtoH3F0RGoJlarwm9rbqIruCO8s3nJFwDSyoNXTf-fB8V234exR0udO2BMggTMS2iHdqyDU/w640-h640/Gemini_Generated_Image_4quckl4quckl4quc.jpeg"
+          />
+          <div class="absolute inset-0 bg-black opacity-70 -z-10"></div>
+
+          <div
+            class="container mx-auto px-4 md:px-20 h-full flex items-center justify-center text-center md:text-left"
+          >
+            <div class="max-w-2xl text-white">
+              <h1
+                class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl"
+              >
+                Jalin Kemitraan,
+                <span class="text-accent">Bangun Generasi Unggul</span>
+              </h1>
+              <p class="mt-4 text-gray-300 md:text-lg lg:text-base xl:text-lg">
+                Kami mengundang perusahaan Anda untuk berkolaborasi dalam
+                program PKL untuk mencetak talenta masa depan yang siap kerja.
+              </p>
+              <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:gap-4">
+                <a
+                  href="#alur"
+                  class="btn-primary px-6 py-3 rounded-md text-center font-semibold shadow-md"
+                >
+                  Lihat Alur Pendaftaran
+                </a>
+                <a
+                  href="#mitra"
+                  class="btn-outline px-6 py-3 rounded-md text-center font-semibold bg-white"
+                >
+                  Lihat Daftar Mitra
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <button
+        aria-label="Previous Slide"
+        class="slider-nav-btn prev"
+        id="hero-prevBtn"
+      >
+        <svg
+          aria-hidden="true"
+          class="w-6 h-6 text-primary"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15 19l-7-7 7-7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          ></path>
+        </svg>
+      </button>
+      <button
+        aria-label="Next Slide"
+        class="slider-nav-btn next"
+        id="hero-nextBtn"
+      >
+        <svg
+          aria-hidden="true"
+          class="w-6 h-6 text-primary"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M9 5l7 7-7 7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          ></path>
+        </svg>
+      </button>
+
+      <!-- Dots Indicator -->
+      <div class="slider-dots" id="hero-dots">
+        <button
+          aria-label="Slide 1"
+          class="slider-dot active"
+          data-slide="0"
+        ></button>
+        <button aria-label="Slide 2" class="slider-dot" data-slide="1"></button>
+        <button aria-label="Slide 3" class="slider-dot" data-slide="2"></button>
+      </div>
+    </section>
+
+    <!-- Alur Section -->
+    <section id="alur" class="py-16 md:py-24 bg-gray-50">
+      <div class="container mx-auto px-4 md:px-6">
+        <div
+          class="flex flex-col items-center justify-center space-y-4 text-center"
+        >
+          <div class="space-y-2">
+            <div
+              class="inline-block rounded-lg bg-accent/30 px-3 py-1 text-sm text-primary"
+            >
+              Proses PKL
+            </div>
+            <h2
+              class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-gray-900"
+            >
+              Alur Pendaftaran & Pelaksanaan PKL
+            </h2>
+            <p
+              class="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+            >
+              Proses yang terstruktur untuk memastikan kelancaran program PKL
+              bagi siswa dan mitra industri.
+            </p>
+          </div>
+        </div>
+        <div
+          class="mx-auto grid max-w-6xl grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-12"
+        >
+          <!-- Step 1 -->
+          <div
+            class="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-all hover:shadow-lg p-6"
+          >
+            <div class="mb-4 text-primary">
+              <i class="fas fa-user-check text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">
+              1. Pendaftaran & Verifikasi
+            </h3>
+            <p class="text-base text-gray-600">
+              Siswa mendaftar melalui portal. Data kemudian diverifikasi oleh
+              Koordinator PKL untuk memastikan kelengkapan dan kesesuaian.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div
+            class="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-all hover:shadow-lg p-6"
+          >
+            <div class="mb-4 text-primary">
+              <i class="fas fa-chalkboard-teacher text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">
+              2. Pembekalan PKL
+            </h3>
+            <p class="text-base text-gray-600">
+              Siswa mendapatkan pembekalan intensif mencakup etos kerja,
+              komunikasi, dan keahlian teknis dasar sebelum terjun ke industri.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div
+            class="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-all hover:shadow-lg p-6"
+          >
+            <div class="mb-4 text-primary">
+              <i class="fas fa-map-marked-alt text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">
+              3. Pemilihan & Penempatan
+            </h3>
+            <p class="text-base text-gray-600">
+              Siswa memilih mitra DU/DI yang tersedia sesuai jurusannya. Proses
+              penempatan akhir dilakukan oleh pihak sekolah.
+            </p>
+          </div>
+
+          <!-- Step 4 -->
+          <div
+            class="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-all hover:shadow-lg p-6"
+          >
+            <div class="mb-4 text-primary">
+              <i class="fas fa-briefcase text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">
+              4. Pelaksanaan PKL
+            </h3>
+            <p class="text-base text-gray-600">
+              Siswa melaksanakan PKL di lokasi mitra selama periode yang telah
+              disepakati, bekerja di bawah supervisi pembimbing industri.
+            </p>
+          </div>
+
+          <!-- Step 5 -->
+          <div
+            class="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-all hover:shadow-lg p-6"
+          >
+            <div class="mb-4 text-primary">
+              <i class="fas fa-search-location text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">
+              5. Monitoring & Evaluasi
+            </h3>
+            <p class="text-base text-gray-600">
+              Guru pembimbing melakukan kunjungan dan evaluasi berkala untuk
+              memantau perkembangan dan kinerja siswa di tempat PKL.
+            </p>
+          </div>
+
+          <!-- Step 6 -->
+          <div
+            class="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-all hover:shadow-lg p-6"
+          >
+            <div class="mb-4 text-primary">
+              <i class="fas fa-file-alt text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">6. Laporan</h3>
+            <p class="text-base text-gray-600">
+              Di akhir periode, siswa diwajibkan menyusun laporan dan mengikuti
+              ujian akhir PKL sebagai syarat kelulusan mata pelajaran.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mitra Section -->
+    <section id="mitra" class="py-16 md:py-24 bg-white hidden">
+      <div class="container mx-auto px-4 md:px-6">
+        <div
+          class="flex flex-col items-center justify-center space-y-4 text-center"
+        >
+          <div class="space-y-2">
+            <div
+              class="inline-block rounded-lg bg-accent/30 px-3 py-1 text-sm text-primary"
+            >
+              Mitra Kami
+            </div>
+            <h2
+              class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-gray-900"
+            >
+              Mitra Dunia Usaha & Dunia Industri (DU/DI)
+            </h2>
+            <p
+              class="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+            >
+              Kami bangga dapat bekerja sama dengan berbagai perusahaan
+              terkemuka di berbagai sektor industri.
+            </p>
+          </div>
+        </div>
+
+        <div class="mx-auto max-w-5xl py-12">
+          <div
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 items-center"
+          >
+            <!-- Mitra Logos - Placeholders -->
+            <div class="flex justify-center">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVHkTKJX0WFyhp0Q19ruBpuhe83u0oHzWTUxjIIdKNMkfuVnbMwIpe8eRc7MXFUNA9gXyNXpU64ifHmiOTYaWHJwOvcuifFavf0BznrS5CcUqvUvkywm3-NzlHL3z02Ha4d-UAdoSVcLl5bRgJXacaXmQlcPlrUvEhKoPDBTdeY9SaU6ROzIKXCuBbI74/w640-h640/Gemini_Generated_Image_u2gv0u2gv0u2gv0u.jpeg"
+                alt="Logo Mitra A"
+                class="max-h-16 grayscale hover:grayscale-0 transition-all"
+              />
+            </div>
+            <div class="flex justify-center">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjnIT3Mph2a8vC8r8YD7IRqH5dwcK1D_lsH8jZ66IlAWqoqLyT8B_lpZv4rePqNmp0XCJwbuWMtJ1pDulfcLZoP9zGRzHEI8TAdDTNiHR86u2B_Ns9B_H6_reUqC1kxksMWLZVOOkVgkperd75a1BQ3TVH2X5nn2U3RixKZkwak6I1OQg_3aaF4-F97Yq8/w640-h640/Gemini_Generated_Image_v2ktitv2ktitv2kt.jpeg"
+                alt="Logo Mitra B"
+                class="max-h-16 grayscale hover:grayscale-0 transition-all"
+              />
+            </div>
+            <div class="flex justify-center">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZmgI0IRybk2n6rGIBigMI00k_eYFTaII-tyRyJqWhwzHe9NFrMCffDc-_FSbP7Kxl2wJd5Gv_XQZi1DDvafsDJWbsfYngb0HWcq6SXeH0aoU4Pt05WdreKqfkkptTPoCcqy5Z7ohf3TOT7hndTIa2zgtgaVNkutLQDh_Bi757YkW2Or97NT8bzresVxQ/w640-h640/Gemini_Generated_Image_v7h9r9v7h9r9v7h9.jpeg"
+                alt="Logo Mitra C"
+                class="max-h-16 grayscale hover:grayscale-0 transition-all"
+              />
+            </div>
+            <div class="flex justify-center">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiL1YiyLen4jfcJ5nm4CutjeEyt-K-zLYEJVn_BApMCqUq8LW-bOvbVY3QO6zZ42pjZSZg6FhZx5Bf3eWlEjs7OkG9-kSb8JEpooDa8AvN89ILL4yrQv0VRyCkfrbPAXOw_qfQut_AOu-jNlHXodaS-vQ0twGPXNB5kmth0hWU6bsNHGZJBx1ngN5KJA4g/w640-h640/Gemini_Generated_Image_w1722yw1722yw172.jpeg"
+                alt="Logo Mitra D"
+                class="max-h-16 grayscale hover:grayscale-0 transition-all"
+              />
+            </div>
+            <div class="flex justify-center">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVHkTKJX0WFyhp0Q19ruBpuhe83u0oHzWTUxjIIdKNMkfuVnbMwIpe8eRc7MXFUNA9gXyNXpU64ifHmiOTYaWHJwOvcuifFavf0BznrS5CcUqvUvkywm3-NzlHL3z02Ha4d-UAdoSVcLl5bVJNXqnUzjuOk3k2kBsele9lrUh83-HpaSEKGDLSgZg3lGGBxQ8cQutCeO7br9kZowY/w640-h640/Gemini_Generated_Image_4pj3bp4pj3bp4pj3.jpeg"
+                alt="Logo Mitra E"
+                class="max-h-16 grayscale hover:grayscale-0 transition-all"
+              />
+            </div>
+            <div class="flex justify-center">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpzsXBS9idr6t89k6sHjD5WYhxiU5D3SgMWkq4I222_y-aYY-Gz_bTg7mqC41cVEp9y2kLgKKII-rtUi4KifcA4R2Nheo7AfY8pDySQz10gFDE7Z6APRt2MtoH3F0RGoJlarwm9rbqIruCO8s3nJFwDSyoNXTf-fB8V234exR0udO2BMggTMS2iHdqyDU/w640-h640/Gemini_Generated_Image_4quckl4quckl4quc.jpeg"
+                alt="Logo Mitra F"
+                class="max-h-16 grayscale hover:grayscale-0 transition-all"
+              />
+            </div>
+            <div class="flex justify-center">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiJq0ASkmD2eOoK37WRCLrFLLyJR0_6RPqyGAggTlmU6H7r9xx1t2al5L-rMJROGrO3RtrF8TqaqU6qvL3AcH2PWyyhGnbv7d0iQdbiPg4YXAx2qgZ-H3cBoPqAzIeYxynOzrGpQkCNREArJSY2ZyuReU-QWGPh9BLbkTKbD98Kq9hNGSTkWuqfYzPdnUc/w640-h640/Gemini_Generated_Image_7nrz8k7nrz8k7nrz.jpeg"
+                alt="Logo Mitra G"
+                class="max-h-16 grayscale hover:grayscale-0 transition-all"
+              />
+            </div>
+            <div class="flex justify-center">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEir87oqB2aH_ZOFbpYk2CKg_xNqclYsXRcUMnlYNSj8iRrqbeh8hTqanTDTx12zjd2dPdjRH2wdE-yfY7M1ZvRx-KWGGYMjcT19EjaN2mHg9mmfiZZxB21_fItw734FW9VNph-nD6pwMPPL0GV9FXUqPH4JWWoRItj9ocVdq7jJBQkg2ueJHnUOhD1a7Ww/w640-h640/Gemini_Generated_Image_26k71k26k71k26k7.jpeg"
+                alt="Logo Mitra H"
+                class="max-h-16 grayscale hover:grayscale-0 transition-all"
+              />
+            </div>
+            <div class="flex justify-center">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj5pkfhQtQQA70LmX_-nZQZpVuMsI2W4fd19s7c0LgGb9FhjcZK9DHYOFYwj-amFe1TKWnziAHI3-UdnDEEaEHyxHs3EP9LLFohUI4zM0f29SRTzzCPmMGFR2QOTjlgIfHooitCGS6qWUop3RYhL4LfF6s85hQUl_gywj8Zg-TL29E4O96yyXromHOeiMg/w640-h640/Gemini_Generated_Image_66e3y066e3y066e3.jpeg"
+                alt="Logo Mitra I"
+                class="max-h-16 grayscale hover:grayscale-0 transition-all"
+              />
+            </div>
+            <div class="flex justify-center">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-xBEJNXPukjng3Cqn83hOsZXgkO7Tladdh0jjD0RL0rdQf7lMy6oRhPNQUVlT6hDbJqMFVHrzHJCVqalsHYZbZGiWlHc_tAygLiPEC0kUuRIVPL_tVC-6Pf0Vp6y7OIIOoEdH36mxZb0cCE0xKjH7zN5E889TwZmq1KCqnpKw8StdQ0kGH7xK1Agk8cs/w640-h640/Gemini_Generated_Image_mbw2sombw2sombw2.jpeg"
+                alt="Logo Mitra J"
+                class="max-h-16 grayscale hover:grayscale-0 transition-all"
+              />
+            </div>
+          </div>
+          <div class="mt-12 text-center">
+            <h3 class="text-xl font-semibold mb-4 text-gray-900">
+              Jadilah Mitra Kami Berikutnya!
+            </h3>
+            <p class="text-gray-600 max-w-2xl mx-auto mb-6">
+              Bergabunglah bersama puluhan perusahaan yang telah merasakan
+              manfaat berkolaborasi dan berkontribusi dalam mencetak sumber daya
+              manusia yang unggul.
+            </p>
+            <a href="#kontak" class="btn-primary px-8 py-3"
+              >Daftar Jadi Mitra</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Keunggulan Section -->
+    <section id="keunggulan" class="py-16 md:py-24 bg-gray-50">
+      <div class="container mx-auto px-4 md:px-6">
+        <div
+          class="flex flex-col items-center justify-center space-y-4 text-center mb-12"
+        >
+          <div class="space-y-2">
+            <div
+              class="inline-block rounded-lg bg-accent/30 px-3 py-1 text-sm text-primary"
+            >
+              Keunggulan Kami
+            </div>
+            <h2
+              class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-gray-900"
+            >
+              Mengapa Bermitra dengan SMK Singaparna?
+            </h2>
+            <p
+              class="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+            >
+              Program PKL kami dirancang untuk memberikan keuntungan mutualisme
+              antara siswa, sekolah, dan dunia industri.
+            </p>
+          </div>
+        </div>
+
+        <div class="mx-auto max-w-7xl">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Feature Item 1 -->
+            <div
+              class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow h-full"
+            >
+              <div class="p-6 h-full flex flex-col">
+                <div class="flex items-center mb-4">
+                  <i class="fas fa-users-cog text-2xl text-primary mr-3"></i>
+                  <h3 class="font-semibold text-lg text-gray-900">
+                    Siswa Kompeten & Siap Kerja
+                  </h3>
+                </div>
+                <div class="flex-grow">
+                  <p class="text-gray-600 mb-3">
+                    Siswa kami telah dibekali dengan pengetahuan teknis dan
+                    karakter yang kuat, siap untuk beradaptasi dan berkontribusi
+                    di lingkungan kerja.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feature Item 2 -->
+            <div
+              class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow h-full"
+            >
+              <div class="p-6 h-full flex flex-col">
+                <div class="flex items-center mb-4">
+                  <i class="fas fa-link text-2xl text-primary mr-3"></i>
+                  <h3 class="font-semibold text-lg text-gray-900">
+                    Kurikulum Selaras Industri
+                  </h3>
+                </div>
+                <div class="flex-grow">
+                  <p class="text-gray-600 mb-3">
+                    Kurikulum kami terus disesuaikan (link and match) dengan
+                    kebutuhan dan perkembangan terbaru di dunia industri,
+                    menjamin relevansi keahlian siswa.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feature Item 3 -->
+            <div
+              class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow h-full"
+            >
+              <div class="p-6 h-full flex flex-col">
+                <div class="flex items-center mb-4">
+                  <i class="fas fa-handshake text-2xl text-primary mr-3"></i>
+                  <h3 class="font-semibold text-lg text-gray-900">
+                    Proses Rekrutmen Efisien
+                  </h3>
+                </div>
+                <div class="flex-grow">
+                  <p class="text-gray-600 mb-3">
+                    Program PKL menjadi sarana bagi perusahaan untuk melakukan
+                    penjaringan dan rekrutmen calon karyawan potensial secara
+                    lebih awal dan efisien.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feature Item 4 -->
+            <div
+              class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow h-full"
+            >
+              <div class="p-6 h-full flex flex-col">
+                <div class="flex items-center mb-4">
+                  <i class="fas fa-seedling text-2xl text-primary mr-3"></i>
+                  <h3 class="font-semibold text-lg text-gray-900">
+                    Kontribusi Pengembangan SDM
+                  </h3>
+                </div>
+                <div class="flex-grow">
+                  <p class="text-gray-600 mb-3">
+                    Bermitra dengan kami adalah bentuk nyata kontribusi
+                    perusahaan dalam pengembangan Sumber Daya Manusia (SDM)
+                    unggul untuk kemajuan bangsa.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feature Item 5 -->
+            <div
+              class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow h-full"
+            >
+              <div class="p-6 h-full flex flex-col">
+                <div class="flex items-center mb-4">
+                  <i class="fas fa-calendar-alt text-2xl text-primary mr-3"></i>
+                  <h3 class="font-semibold text-lg text-gray-900">
+                    Fleksibilitas Program
+                  </h3>
+                </div>
+                <div class="flex-grow">
+                  <p class="text-gray-600 mb-3">
+                    Kami terbuka untuk mendiskusikan penyesuaian program,
+                    durasi, dan jumlah siswa sesuai dengan kapasitas dan
+                    kebutuhan spesifik perusahaan Anda.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feature Item 6 -->
+            <div
+              class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow h-full"
+            >
+              <div class="p-6 h-full flex flex-col">
+                <div class="flex items-center mb-4">
+                  <i class="fas fa-school text-2xl text-primary mr-3"></i>
+                  <h3 class="font-semibold text-lg text-gray-900">
+                    Dukungan Penuh dari Sekolah
+                  </h3>
+                </div>
+                <div class="flex-grow">
+                  <p class="text-gray-600 mb-3">
+                    Pihak sekolah menyediakan guru pembimbing yang berdedikasi
+                    untuk memonitor dan memastikan kelancaran serta kualitas
+                    pelaksanaan PKL.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- ========= NEW GALLERY SECTION START ========= -->
+    <!-- ============================================= -->
+    <section id="gallery" class="py-16 md:py-24 bg-white">
+      <div class="container mx-auto px-4 md:px-6">
+        <div
+          class="flex flex-col items-center justify-center space-y-4 text-center mb-12"
+        >
+          <div class="space-y-2">
+            <div
+              class="inline-block rounded-lg bg-accent/30 px-3 py-1 text-sm text-primary"
+            >
+              Galeri Kegiatan
+            </div>
+            <h2
+              class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-gray-900"
+            >
+              Momen Terbaik Selama PKL
+            </h2>
+            <p
+              class="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+            >
+              Lihat bagaimana siswa kami belajar, berkolaborasi, dan
+              berkontribusi secara langsung di dunia industri.
+            </p>
+          </div>
+        </div>
+
+        <!-- Gallery Slider Container -->
+        <div class="relative">
+          <!-- Gallery Slider -->
+          <div
+            class="gallery-slider-container relative overflow-hidden"
+            id="gallery-container"
+          >
+            <!-- Slide 1 -->
+            <div class="slide-item active">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiJq0ASkmD2eOoK37WRCLrFLLyJR0_6RPqyGAggTlmU6H7r9xx1t2al5L-rMJROGrO3RtrF8TqaqU6qvL3AcH2PWyyhGnbv7d0iQdbiPg4YXAx2qgZ-H3cBoPqAzIeYxynOzrGpQkCNREArJSY2ZyuReU-QWGPh9BLbkTKbD98Kq9hNGSTkWuqfYzPdnUc/w640-h640/Gemini_Generated_Image_7nrz8k7nrz8k7nrz.jpeg"
+                alt="Siswa sedang berdiskusi di sebuah workshop"
+                class="w-full h-auto"
+              />
+            </div>
+            <!-- Slide 2 -->
+            <div class="slide-item">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEir87oqB2aH_ZOFbpYk2CKg_xNqclYsXRcUMnlYNSj8iRrqbeh8hTqanTDTx12zjd2dPdjRH2wdE-yfY7M1ZvRx-KWGGYMjcT19EjaN2mHg9mmfiZZxB21_fItw734FW9VNph-nD6pwMPPL0GV9FXUqPH4JWWoRItj9ocVdq7jJBQkg2ueJHnUOhD1a7Ww/w640-h640/Gemini_Generated_Image_26k71k26k71k26k7.jpeg"
+                alt="Siswa jurusan TKJ sedang merakit komputer"
+                class="w-full h-auto"
+              />
+            </div>
+            <!-- Slide 3 -->
+            <div class="slide-item">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjnIT3Mph2a8vC8r8YD7IRqH5dwcK1D_lsH8jZ66IlAWqoqLyT8B_lpZv4rePqNmp0XCJwbuWMtJ1pDulfcLZoP9zGRzHEI8TAdDTNiHR86u2B_Ns9B_H6_reUqC1kxksMWLZVOOkVgkperd75a1BQ3TVH2X5nn2U3RixKZkwak6I1OQg_3aaF4-F97Yq8/w640-h640/Gemini_Generated_Image_v2ktitv2ktitv2kt.jpeg"
+                alt="Siswa jurusan otomotif sedang memeriksa mesin mobil"
+                class="w-full h-auto"
+              />
+            </div>
+            <!-- Slide 4 -->
+            <div class="slide-item">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-xBEJNXPukjng3Cqn83hOsZXgkO7Tladdh0jjD0RL0rdQf7lMy6oRhPNQUVlT6hDbJqMFVHrzHJCVqalsHYZbZGiWlHc_tAygLiPEC0kUuRIVPL_tVC-6Pf0Vp6y7OIIOoEdH36mxZb0cCE0xKjH7zN5E889TwZmq1KCqnpKw8StdQ0kGH7xK1Agk8cs/w640-h640/Gemini_Generated_Image_mbw2sombw2sombw2.jpeg"
+                alt="Guru pembimbing memberikan arahan kepada siswa di laboratorium"
+                class="w-full h-auto"
+              />
+            </div>
+            <!-- Slide 5 -->
+            <div class="slide-item">
+              <img
+                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiL1YiyLen4jfcJ5nm4CutjeEyt-K-zLYEJVn_BApMCqUq8LW-bOvbVY3QO6zZ42pjZSZg6FhZx5Bf3eWlEjs7OkG9-kSb8JEpooDa8AvN89ILL4yrQv0VRyCkfrbPAXOw_qfQut_AOu-jNlHXodaS-vQ0twGPXNB5kmth0hWU6bsNHGZJBx1ngN5KJA4g/w640-h640/Gemini_Generated_Image_w1722yw1722yw172.jpeg"
+                alt="Siswa bekerja dalam tim untuk menyelesaikan sebuah proyek"
+                class="w-full h-auto"
+              />
+            </div>
+          </div>
+
+          <!-- Navigation Buttons -->
+          <button
+            aria-label="Previous Slide"
+            class="slider-nav-btn prev absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-md hover:bg-white transition"
+            id="gallery-prevBtn"
+          >
+            <svg
+              aria-hidden="true"
+              class="w-6 h-6 text-primary"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M15 19l-7-7 7-7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              ></path>
+            </svg>
+          </button>
+          <button
+            aria-label="Next Slide"
+            class="slider-nav-btn next absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-md hover:bg-white transition"
+            id="gallery-nextBtn"
+          >
+            <svg
+              aria-hidden="true"
+              class="w-6 h-6 text-primary"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M9 5l7 7-7 7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              ></path>
+            </svg>
+          </button>
+
+          <!-- Dots Indicator -->
+          <div
+            class="slider-dots flex justify-center mt-4 space-x-2"
+            id="gallery-dots"
+          >
+            <button
+              aria-label="Go to slide 1"
+              class="slider-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-primary transition active"
+              data-slide="0"
+            ></button>
+            <button
+              aria-label="Go to slide 2"
+              class="slider-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-primary transition"
+              data-slide="1"
+            ></button>
+            <button
+              aria-label="Go to slide 3"
+              class="slider-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-primary transition"
+              data-slide="2"
+            ></button>
+            <button
+              aria-label="Go to slide 4"
+              class="slider-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-primary transition"
+              data-slide="3"
+            ></button>
+            <button
+              aria-label="Go to slide 5"
+              class="slider-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-primary transition"
+              data-slide="4"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      .gallery-slider-container {
+        position: relative;
+        height: 500px; /* Sesuaikan tinggi sesuai kebutuhan */
+      }
+
+      .slide-item {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      .slide-item.active {
+        opacity: 1;
+      }
+
+      .slide-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+
+      .slider-dot.active {
+        background-color: #3b82f6 !important; /* Warna primary */
+      }
+
+      /* Custom pulse animation for primary button */
+      @keyframes pulse-primary {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(13, 71, 161, 0.7); /* primary color with opacity */
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(13, 71, 161, 0);
+        }
+      }
+
+      .animate-pulse-primary {
+        animation: pulse-primary 2s infinite;
+      }
+    </style>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("gallery-container");
+        const slides = document.querySelectorAll(".slide-item");
+        const dots = document.querySelectorAll(".slider-dot");
+        const prevBtn = document.getElementById("gallery-prevBtn");
+        const nextBtn = document.getElementById("gallery-nextBtn");
+
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        // Fungsi untuk menampilkan slide
+        function showSlide(index) {
+          // Sembunyikan semua slide
+          slides.forEach((slide) => slide.classList.remove("active"));
+          // Tampilkan slide yang dipilih
+          slides[index].classList.add("active");
+
+          // Update dot indicator
+          dots.forEach((dot) => dot.classList.remove("active"));
+          dots[index].classList.add("active");
+
+          currentSlide = index;
+        }
+
+        // Fungsi untuk slide berikutnya
+        function nextSlide() {
+          currentSlide = (currentSlide + 1) % totalSlides;
+          showSlide(currentSlide);
+        }
+
+        // Fungsi untuk slide sebelumnya
+        function prevSlide() {
+          currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+          showSlide(currentSlide);
+        }
+
+        // Event listener untuk tombol next
+        nextBtn.addEventListener("click", nextSlide);
+
+        // Event listener untuk tombol prev
+        prevBtn.addEventListener("click", prevSlide);
+
+        // Event listener untuk dot indicator
+        dots.forEach((dot) => {
+          dot.addEventListener("click", function () {
+            const slideIndex = parseInt(this.getAttribute("data-slide"));
+            showSlide(slideIndex);
+          });
+        });
+
+        // Otomatis pindah slide setiap 5 detik
+        setInterval(nextSlide, 5000);
+
+        // Tampilkan slide pertama saat halaman dimuat
+        showSlide(0);
+      });
+    </script>
+    <!-- ============================================= -->
+    <!-- ========== NEW GALLERY SECTION END ========== -->
+    <!-- ============================================= -->
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-16 md:py-24 bg-white">
+      <div class="container mx-auto px-4 md:px-6">
+        <main
+          class="bg-gray-50 max-w-5xl w-full p-6 md:p-10 flex flex-col md:flex-row gap-8 md:gap-12 rounded-lg shadow-md mx-auto"
+        >
+          <section class="md:w-1/2 flex flex-col gap-6">
+            <h2
+              class="font-bold text-2xl md:text-3xl leading-tight text-gray-900"
+            >
+              Pertanyaan Umum
+              <br />
+              <span class="text-primary">(Frequently Asked Questions)</span>
+            </h2>
+            <p class="text-base text-gray-600 leading-relaxed">
+              Temukan jawaban atas pertanyaan yang sering diajukan mengenai
+              program PKL, pendaftaran mitra, dan hal teknis lainnya.
+            </p>
+          </section>
+
+          <section class="md:w-1/2 flex flex-col divide-y divide-gray-200">
+            <!-- FAQ Item 1 -->
+            <article class="py-4">
+              <button
+                class="accordion-question w-full flex justify-between items-center text-left text-base md:text-lg font-semibold text-gray-900 pb-3 hover:text-primary transition-colors"
+                aria-expanded="false"
+                aria-controls="faq1"
+                type="button"
+              >
+                <span>Kapan periode PKL tahun 2025 akan dilaksanakan?</span>
+                <svg
+                  class="w-5 h-5 text-primary shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div
+                id="faq1"
+                class="accordion-content text-gray-600 leading-relaxed"
+                aria-hidden="true"
+              >
+                <p class="text-base">
+                  Periode PKL umumnya dilaksanakan selama 3-6 bulan, dimulai
+                  sekitar bulan Januari atau Juli. Jadwal detail akan
+                  diinformasikan lebih lanjut dan dapat disesuaikan dengan
+                  kalender industri mitra.
+                </p>
+              </div>
+            </article>
+
+            <!-- FAQ Item 2 -->
+            <article class="py-4">
+              <button
+                class="accordion-question w-full flex justify-between items-center text-left text-base md:text-lg font-semibold text-gray-900 pb-3 hover:text-primary transition-colors"
+                aria-expanded="false"
+                aria-controls="faq2"
+                type="button"
+              >
+                <span>Apa saja jurusan yang tersedia di SMK Singaparna?</span>
+                <svg
+                  class="w-5 h-5 text-primary shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div
+                id="faq2"
+                class="accordion-content text-gray-600 leading-relaxed"
+                aria-hidden="true"
+              >
+                <p class="text-base">
+                  SMK Singaparna memiliki beragam jurusan unggulan seperti
+                  Teknik Komputer & Jaringan (TKJ), Rekayasa Perangkat Lunak
+                  (RPL), Akuntansi, Pemasaran, dan Teknik Kendaraan Ringan
+                  (TKR). Daftar lengkap bisa diminta melalui kontak kami.
+                </p>
+              </div>
+            </article>
+
+            <!-- FAQ Item 3 -->
+            <article class="py-4">
+              <button
+                class="accordion-question w-full flex justify-between items-center text-left text-base md:text-lg font-semibold text-gray-900 pb-3 hover:text-primary transition-colors"
+                aria-expanded="false"
+                aria-controls="faq3"
+                type="button"
+              >
+                <span
+                  >Bagaimana cara perusahaan saya mendaftar sebagai mitra
+                  PKL?</span
+                >
+                <svg
+                  class="w-5 h-5 text-primary shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div
+                id="faq3"
+                class="accordion-content text-gray-600 leading-relaxed"
+                aria-hidden="true"
+              >
+                <p class="text-base">
+                  Anda dapat menghubungi Koordinator PKL kami melalui formulir
+                  kontak atau nomor WhatsApp yang tersedia di situs ini.
+                  Selanjutnya, tim kami akan mengirimkan proposal dan formulir
+                  kesediaan (MoU).
+                </p>
+              </div>
+            </article>
+
+            <!-- FAQ Item 4 -->
+            <article class="py-4">
+              <button
+                class="accordion-question w-full flex justify-between items-center text-left text-base md:text-lg font-semibold text-gray-900 pb-3 hover:text-primary transition-colors"
+                aria-expanded="false"
+                aria-controls="faq4"
+                type="button"
+              >
+                <span>Apa saja kewajiban perusahaan sebagai mitra?</span>
+                <svg
+                  class="w-5 h-5 text-primary shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div
+                id="faq4"
+                class="accordion-content text-gray-600 leading-relaxed"
+                aria-hidden="true"
+              >
+                <p class="text-base">
+                  Mitra industri diharapkan dapat menyediakan pembimbing
+                  lapangan, memberikan tugas yang relevan dengan kompetensi
+                  jurusan, serta memberikan penilaian kinerja siswa di akhir
+                  program PKL.
+                </p>
+              </div>
+            </article>
+
+            <!-- FAQ Item 5 -->
+            <article class="py-4">
+              <button
+                class="accordion-question w-full flex justify-between items-center text-left text-base md:text-lg font-semibold text-gray-900 pb-3 hover:text-primary transition-colors"
+                aria-expanded="false"
+                aria-controls="faq5"
+                type="button"
+              >
+                <span
+                  >Siapa yang bisa dihubungi untuk informasi lebih lanjut?</span
+                >
+                <svg
+                  class="w-5 h-5 text-primary shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div
+                id="faq5"
+                class="accordion-content text-gray-600 leading-relaxed"
+                aria-hidden="true"
+              >
+                <p class="text-base">
+                  Silakan hubungi Koordinator PKL kami melalui nomor WhatsApp
+                  atau formulir yang ada di bagian 'Kontak' di halaman ini. Tim
+                  kami akan dengan senang hati membantu Anda.
+                </p>
+              </div>
+            </article>
+          </section>
+        </main>
+      </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="kontak" class="py-16 md:py-24 bg-gray-50">
+      <div class="container mx-auto px-4 md:px-6">
+        <div
+          class="flex flex-col items-center justify-center space-y-4 text-center mb-12"
+        >
+          <div class="space-y-2">
+            <div
+              class="inline-block rounded-lg bg-accent/30 px-3 py-1 text-sm text-primary"
+            >
+              <i class="fas fa-headset mr-2"></i>Kontak Kami
+            </div>
+            <h2
+              class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-gray-900"
+            >
+              Hubungi Pembimbing PKL
+            </h2>
+            <p
+              class="max-w-[600px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+            >
+              Isi form di bawah ini atau hubungi kami via WhatsApp untuk
+              pertanyaan seputar kemitraan atau informasi lainnya.
+            </p>
+          </div>
+        </div>
+
+        <form
+          id="registration-form"
+          class="mx-auto max-w-xl bg-white p-8 rounded-xl shadow-lg border border-gray-100 transition-all hover:shadow-xl space-y-6"
+        >
+          <!-- Nama Lengkap -->
+          <div>
+            <label
+              for="name"
+              class="block text-sm font-medium text-gray-700 mb-2 flex items-center"
+            >
+              <i class="fas fa-user mr-2 text-primary"></i>Nama Lengkap
+            </label>
+            <input
+              type="text"
+              name="Nama"
+              id="name"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+              placeholder="Masukkan nama lengkap Anda"
+            />
+          </div>
+
+          <!-- Nama Pembimbing -->
+          <div>
+            <label
+              for="supervisor"
+              class="block text-sm font-medium text-gray-700 mb-2 flex items-center"
+            >
+              <i class="fas fa-user-tie mr-2 text-primary"></i>Nama Pembimbing
+            </label>
+            <select
+              name="Pembimbing"
+              id="supervisor"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-white"
+            >
+              <option value="" disabled selected>
+                -- Pilih Nama Pembimbing --
+              </option>
+              <!-- Opsi akan diisi oleh JavaScript -->
+            </select>
+          </div>
+
+          <!-- Nomor Telepon muncul otomatis -->
+          <div>
+            <label
+              for="supervisor-phone"
+              class="block text-sm font-medium text-gray-700 mb-2 flex items-center"
+            >
+              <i class="fas fa-phone-alt mr-2 text-primary"></i>Nomor WA
+              Pembimbing
+            </label>
+            <input
+              type="tel"
+              name="Telepon"
+              id="supervisor-phone"
+              required
+              readonly
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-gray-100 cursor-not-allowed"
+              placeholder="Nomor akan muncul otomatis"
+            />
+          </div>
+
+          <!-- MODIFIKASI TAMBAHAN: Tambah ComboBox Kategori Topik -->
+          <div>
+            <label
+              for="topic-category"
+              class="block text-sm font-medium text-gray-700 mb-2 flex items-center"
+            >
+              <i class="fas fa-tags mr-2 text-primary"></i>Kategori Topik
+            </label>
+            <select
+              name="Kategori"
+              id="topic-category"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-white"
+            >
+              <option value="" disabled selected>
+                -- Pilih Kategori Topik --
+              </option>
+              <!-- Opsi akan diisi oleh JavaScript -->
+            </select>
+          </div>
+          <!-- AKHIR MODIFIKASI TAMBAHAN -->
+
+          <!-- Pesan/Pertanyaan -->
+          <div>
+            <label
+              for="message"
+              class="block text-sm font-medium text-gray-700 mb-2 flex items-center"
+            >
+              <i class="fas fa-comment-dots mr-2 text-primary"></i
+              >Pesan/Pertanyaan
+            </label>
+            <textarea
+              name="Pesan"
+              id="message"
+              rows="4"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+              placeholder="Tulis detail pertanyaan Anda di sini..."
+              required
+            ></textarea>
+          </div>
+
+          <!-- Tombol kirim ke nomor WA yang sesuai -->
+          <div class="space-y-4 mt-4">
+            <button
+              type="button"
+              id="whatsapp-button"
+              class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition-all flex items-center justify-center shadow-md hover:shadow-lg"
+            >
+              <i class="fab fa-whatsapp mr-3 text-2xl"></i>Kirim Pesan via
+              WhatsApp
+            </button>
+            <p class="text-xs text-gray-500 text-center mt-4">
+              Dengan mengklik tombol di atas, Anda akan diarahkan ke WhatsApp
+              untuk mengirim data yang telah diisi.
+            </p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <script>
+      // Menunggu hingga semua elemen HTML dimuat
+      document.addEventListener("DOMContentLoaded", function () {
+        // --- Data Dummy Pembimbing ---
+        const supervisors = [
+          { name: "Delisna Mulia, S.T.", phone: "6285171101303" },
+          { name: "Rima Akmaliah, S.T.", phone: "6282240075380" },
+          { name: "Hera Kartina, M.Pd.", phone: "6282315743864" },
+          { name: "Nia Kurniati, S.Pd.", phone: "6281322359623" },
+          { name: "Muhamad Rafi, S.Kom.", phone: "6283829220501" },
+        ];
+
+        // --- MODIFIKASI: Data Dummy untuk Kategori Topik PKL ---
+        const pklTopics = [
+          "Konsultasi Bimbingan Laporan",
+          "Jadwal Bimbingan",
+          "Permohonan Izin/Sakit",
+          "Kendala Teknis Proyek",
+          "Informasi Penilaian",
+          "Konfirmasi Kehadiran",
+          "Pertanyaan Umum Lainnya",
+        ];
+
+        // --- Mengambil elemen dari HTML ---
+        const supervisorSelect = document.getElementById("supervisor");
+        const supervisorPhoneInput =
+          document.getElementById("supervisor-phone");
+        const whatsappButton = document.getElementById("whatsapp-button");
+        const registrationForm = document.getElementById("registration-form");
+        const nameInput = document.getElementById("name");
+        const messageInput = document.getElementById("message");
+        // MODIFIKASI: Mengambil elemen combo box kategori
+        const topicCategorySelect = document.getElementById("topic-category");
+
+        // --- 1. Mengisi ComboBox (Select) dengan data dummy pembimbing ---
+        supervisors.forEach((supervisor, index) => {
+          const option = document.createElement("option");
+          option.value = index;
+          option.textContent = supervisor.name;
+          supervisorSelect.appendChild(option);
+        });
+
+        // --- MODIFIKASI: Mengisi ComboBox Kategori Topik ---
+        pklTopics.forEach((topic) => {
+          const option = document.createElement("option");
+          option.value = topic;
+          option.textContent = topic;
+          topicCategorySelect.appendChild(option);
+        });
+
+        // --- 2. Event Listener untuk mengubah nomor telepon saat pembimbing dipilih ---
+        supervisorSelect.addEventListener("change", function () {
+          const selectedIndex = this.value;
+
+          if (selectedIndex !== "") {
+            const selectedSupervisor = supervisors[selectedIndex];
+            supervisorPhoneInput.value = selectedSupervisor.phone;
+          } else {
+            supervisorPhoneInput.value = "";
+          }
+        });
+
+        // --- 3. Event Listener untuk tombol Kirim WhatsApp ---
+        whatsappButton.addEventListener("click", function () {
+          if (!registrationForm.checkValidity()) {
+            alert("Harap isi semua kolom yang wajib diisi terlebih dahulu.");
+            registrationForm.reportValidity();
+            return;
+          }
+
+          const studentName = nameInput.value;
+          const selectedIndex = supervisorSelect.value;
+          const selectedSupervisor = supervisors[selectedIndex];
+          const supervisorName = selectedSupervisor.name;
+          const supervisorPhone = selectedSupervisor.phone;
+          // MODIFIKASI: Mengambil nilai dari combo box kategori
+          const topicCategory = topicCategorySelect.value;
+          const message = messageInput.value;
+
+          // MODIFIKASI: Memperbarui template pesan WhatsApp dengan Kategori Topik
+          const waMessage = `
+Selamat Pagi/Siang/Sore, Bapak/Ibu ${supervisorName}.
+
+Perkenalkan, saya ${studentName}.
+Saya ingin menghubungi Bapak/Ibu terkait PKL.
+
+*Kategori Topik:*
+${topicCategory}
+
+*Pesan:*
+${message}
+
+Terima kasih atas perhatiannya.
+          `.trim();
+
+          const encodedMessage = encodeURIComponent(waMessage);
+          const whatsappUrl = `https://api.whatsapp.com/send?phone=${supervisorPhone}&text=${encodedMessage}`;
+          window.open(whatsappUrl, "_blank");
+        });
+      });
+    </script>
+
+    <!-- Footer -->
+    <footer class="border-t bg-gray-900 text-white">
+      <div
+        class="container mx-auto flex flex-col gap-6 py-8 md:py-12 px-4 md:px-6"
+      >
+        <div class="flex flex-col gap-6 md:flex-row md:gap-8 lg:gap-12">
+          <div class="flex-1 space-y-4">
+            <div class="flex items-center gap-2">
+              <span class="text-xl font-bold text-primary"
+                >Portal PKL SMK Singaparna</span
+              >
+            </div>
+            <p class="text-sm text-gray-400">
+              Menjembatani masa depan siswa melalui program Praktik Kerja
+              Lapangan yang berkualitas dan terstruktur bersama mitra industri.
+            </p>
+          </div>
+          <div class="grid flex-1 grid-cols-2 gap-8 sm:grid-cols-3">
+            <div class="space-y-3">
+              <h3 class="text-sm font-medium text-white">Navigasi</h3>
+              <ul class="space-y-1">
+                <li>
+                  <a
+                    class="text-sm text-gray-400 hover:text-accent"
+                    href="#alur"
+                  >
+                    Alur PKL
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="text-sm text-gray-400 hover:text-accent"
+                    href="#mitra"
+                  >
+                    Mitra Industri
+                  </a>
+                </li>
+                <!-- NEW: Gallery Footer Link -->
+                <li>
+                  <a
+                    class="text-sm text-gray-400 hover:text-accent"
+                    href="#gallery"
+                  >
+                    Galeri
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="text-sm text-gray-400 hover:text-accent"
+                    href="#kontak"
+                  >
+                    Kontak
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="space-y-3">
+              <h3 class="text-sm font-medium text-white">Tentang</h3>
+              <ul class="space-y-1">
+                <li>
+                  <a
+                    class="text-sm text-gray-400 hover:text-accent"
+                    href="#keunggulan"
+                  >
+                    Keunggulan
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="text-sm text-gray-400 hover:text-accent"
+                    href="#faq"
+                  >
+                    FAQ
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="space-y-3">
+              <h3 class="text-sm font-medium text-white">Sosial Media</h3>
+              <ul class="space-y-1">
+                <li>
+                  <a class="text-sm text-gray-400 hover:text-accent" href="#">
+                    Instagram
+                  </a>
+                </li>
+                <li>
+                  <a class="text-sm text-gray-400 hover:text-accent" href="#">
+                    Facebook
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <p class="text-xs text-gray-500">
+            © 2024 Hubin SMK Singaparna. Hak Cipta Dilindungi.
+          </p>
+          <div class="flex gap-4">
+            <a href="#" class="text-gray-400 hover:text-accent">
+              <i class="fab fa-facebook text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-accent">
+              <i class="fab fa-twitter text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-accent">
+              <i class="fab fa-instagram text-xl"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // --- WhatsApp Form Submission ---
+        // This functionality is already handled by the script block inside the Contact section
+        // No need to duplicate it here. The original script has a bug trying to get elements
+        // that don't exist (institution, etc.). The specific script in the form is correct.
+
+        // --- Hero Carousel Functionality ---
+        const heroSlider = document.getElementById("hero-container");
+        const heroSlides = heroSlider
+          ? heroSlider.querySelectorAll(".slide-item")
+          : [];
+        const heroPrevBtn = document.getElementById("hero-prevBtn");
+        const heroNextBtn = document.getElementById("hero-nextBtn");
+        const heroDotsContainer = document.getElementById("hero-dots");
+        const heroDots = heroDotsContainer
+          ? heroDotsContainer.querySelectorAll(".slider-dot")
+          : [];
+
+        let heroCurrentIndex = 0;
+        const heroSlideDuration = 7000; // milliseconds
+        let heroAutoSlideInterval;
+
+        function updateHeroSlider() {
+          if (heroSlides.length === 0) return;
+          heroSlides.forEach((slide) => {
+            slide.classList.remove("active");
+          });
+          heroDots.forEach((dot) => dot.classList.remove("active"));
+
+          heroSlides[heroCurrentIndex].classList.add("active");
+          heroDots[heroCurrentIndex].classList.add("active");
+        }
+
+        function goToHeroSlide(index) {
+          heroCurrentIndex = (index + heroSlides.length) % heroSlides.length;
+          updateHeroSlider();
+          resetHeroAutoSlide();
+        }
+
+        function nextHeroSlide() {
+          goToHeroSlide(heroCurrentIndex + 1);
+        }
+
+        function prevHeroSlide() {
+          goToHeroSlide(heroCurrentIndex - 1);
+        }
+
+        function resetHeroAutoSlide() {
+          clearInterval(heroAutoSlideInterval);
+          if (heroSlides.length > 1) {
+            heroAutoSlideInterval = setInterval(
+              nextHeroSlide,
+              heroSlideDuration
+            );
+          }
+        }
+
+        if (heroSlides.length > 0) {
+          updateHeroSlider();
+          resetHeroAutoSlide();
+          if (heroPrevBtn) heroPrevBtn.addEventListener("click", prevHeroSlide);
+          if (heroNextBtn) heroNextBtn.addEventListener("click", nextHeroSlide);
+          heroDots.forEach((dot) => {
+            dot.addEventListener("click", function () {
+              const slideIndex = parseInt(this.getAttribute("data-slide"));
+              goToHeroSlide(slideIndex);
+            });
+          });
+          heroSlider.addEventListener("mouseenter", () => {
+            clearInterval(heroAutoSlideInterval);
+          });
+          heroSlider.addEventListener("mouseleave", resetHeroAutoSlide);
+        }
+
+        // --- NEW: Gallery Carousel Functionality ---
+        const gallerySlider = document.getElementById("gallery-container");
+        const gallerySlides = gallerySlider
+          ? gallerySlider.querySelectorAll(".slide-item")
+          : [];
+        const galleryPrevBtn = document.getElementById("gallery-prevBtn");
+        const galleryNextBtn = document.getElementById("gallery-nextBtn");
+        const galleryDotsContainer = document.getElementById("gallery-dots");
+        const galleryDots = galleryDotsContainer
+          ? galleryDotsContainer.querySelectorAll(".slider-dot")
+          : [];
+
+        let galleryCurrentIndex = 0;
+        const gallerySlideDuration = 5000; // 5 seconds for gallery
+        let galleryAutoSlideInterval;
+
+        function updateGallerySlider() {
+          if (gallerySlides.length === 0) return;
+          gallerySlides.forEach((slide) => {
+            slide.classList.remove("active");
+          });
+          galleryDots.forEach((dot) => dot.classList.remove("active"));
+
+          gallerySlides[galleryCurrentIndex].classList.add("active");
+          galleryDots[galleryCurrentIndex].classList.add("active");
+        }
+
+        function goToGallerySlide(index) {
+          galleryCurrentIndex =
+            (index + gallerySlides.length) % gallerySlides.length;
+          updateGallerySlider();
+          resetGalleryAutoSlide();
+        }
+
+        function nextGallerySlide() {
+          goToGallerySlide(galleryCurrentIndex + 1);
+        }
+
+        function prevGallerySlide() {
+          goToGallerySlide(galleryCurrentIndex - 1);
+        }
+
+        function resetGalleryAutoSlide() {
+          clearInterval(galleryAutoSlideInterval);
+          if (gallerySlides.length > 1) {
+            galleryAutoSlideInterval = setInterval(
+              nextGallerySlide,
+              gallerySlideDuration
+            );
+          }
+        }
+
+        if (gallerySlides.length > 0) {
+          updateGallerySlider();
+          resetGalleryAutoSlide();
+          if (galleryPrevBtn)
+            galleryPrevBtn.addEventListener("click", prevGallerySlide);
+          if (galleryNextBtn)
+            galleryNextBtn.addEventListener("click", nextGallerySlide);
+          galleryDots.forEach((dot) => {
+            dot.addEventListener("click", function () {
+              const slideIndex = parseInt(this.getAttribute("data-slide"));
+              goToGallerySlide(slideIndex);
+            });
+          });
+          gallerySlider.addEventListener("mouseenter", () => {
+            clearInterval(galleryAutoSlideInterval);
+          });
+          gallerySlider.addEventListener("mouseleave", resetGalleryAutoSlide);
+        }
+
+        // --- Accordion Functionality (FAQ) ---
+        const faqButtons = document.querySelectorAll("#faq article button");
+
+        faqButtons.forEach((button) => {
+          const contentId = button.getAttribute("aria-controls");
+          const content = document.getElementById(contentId);
+
+          button.addEventListener("click", function () {
+            const isExpanded = this.getAttribute("aria-expanded") === "true";
+
+            // Close all other accordions
+            faqButtons.forEach((otherButton) => {
+              if (otherButton !== this) {
+                const otherContentId =
+                  otherButton.getAttribute("aria-controls");
+                const otherContent = document.getElementById(otherContentId);
+                otherButton.setAttribute("aria-expanded", "false");
+                otherButton.classList.remove("open");
+                if (otherContent) otherContent.classList.remove("open");
+              }
+            });
+
+            // Toggle current accordion
+            if (isExpanded) {
+              this.setAttribute("aria-expanded", "false");
+              this.classList.remove("open");
+              if (content) content.classList.remove("open");
+            } else {
+              this.setAttribute("aria-expanded", "true");
+              this.classList.add("open");
+              if (content) content.classList.add("open");
+            }
+          });
+        });
+
+        // --- Smooth scrolling for anchor links ---
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            const targetId = this.getAttribute("href");
+            if (targetId === "#") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              return;
+            }
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              e.preventDefault();
+              const header = document.querySelector("header");
+              const headerHeight = header ? header.offsetHeight : 0;
+              const targetPosition =
+                targetElement.getBoundingClientRect().top +
+                window.scrollY -
+                headerHeight -
+                20;
+              window.scrollTo({
+                top: targetPosition,
+                behavior: "smooth",
+              });
+            }
+          });
+        });
+      });
+    </script>
+
+    <div
+      id="welcomeModal"
+      class="fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 opacity-0 pointer-events-none"
+    >
+      <div
+        class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300"
+      ></div>
+      <div class="relative w-[min(135vw,75vh)] h-[min(135vw,75vh)]">
+        <div
+          class="w-full h-full bg-cover bg-center rounded-xl overflow-hidden shadow-2xl"
+          style="
+            background-image: url('https://blogger.googleusercontent.com/img/a/AVvXsEhdCCk1r-RA63IWErrugJjxT_m_rktasta0-JQlMFEMlcSqeqkdM-SuPFeT0Vv_jshYVt2K2uEhmW9pZm8AUFaVPab6DOG8O6sVc0a4-0gREKJhuzfKV_BEBPwrwa0QIrJgL_bJAohaQT6_NsZmyl43nV1zs3nK6mvReMcCDn02vqjHwpvYIDj4Ka70Q5c=w640-h640');
+          "
+        >
+          <div
+            class="absolute inset-0 flex flex-col items-center justify-end p-4 sm:p-6 bg-gradient-to-t from-black/100 via-black/20 to-transparent"
+          >
+            <div class="text-center text-white space-y-2 sm:space-y-3">
+              <h1
+                class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight"
+              >
+                Selamat Datang di Portal PKL
+              </h1>
+              <p class="text-xs sm:text-sm md:text-base opacity-90">
+                SMK Singaparna - Siap Terjun ke Dunia Industri!
+              </p>
+            </div>
+
+            <button
+              id="closeModalXBtn"
+              class="absolute top-3 right-3 sm:top-4 sm:right-4 text-white bg-black/50 hover:bg-black/70 rounded-full p-1 sm:p-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
+              aria-label="Tutup Modal"
+            >
+              <i class="fas fa-times text-lg sm:text-xl"></i>
+            </button>
+
+            <div
+              class="flex flex-wrap justify-center gap-2 sm:gap-3 mt-4 sm:mt-6 w-full px-2"
+            >
+              <a
+                href="https://script.google.com/a/macros/guru.smk.belajar.id/s/AKfycbwygGVy-vnnIYH_s2tbb_SvNUqJWDg58aF62i2wCFfB83XTZiF-s_uwwEcxZkS6VH_wAA/exec"
+                target="_blank"
+                class="px-4 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-sm font-medium rounded-lg bg-white text-black hover:bg-gray-100 transition-all duration-200 shadow-md focus:outline-none focus:ring-2 focus:ring-white"
+              >
+                Entri Absen
+              </a>
+              <button
+                id="openReportModalBtn"
+                type="button"
+                class="px-4 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-sm font-medium rounded-lg border border-white/50 hover:border-white hover:bg-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white text-white"
+              >
+                Report Absen
+              </button>
+              <a
+                href="#kontak"
+                id="hubPembimbingBtn"
+                class="px-4 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-sm font-medium rounded-lg bg-white text-black hover:bg-gray-100 transition-all duration-200 shadow-md focus:outline-none focus:ring-2 focus:ring-white"
+              >
+                Hub. Pembimbing
+              </a>
+
+              <script>
+                document
+                  .getElementById("hubPembimbingBtn")
+                  .addEventListener("click", function () {
+                    // Sesuaikan dengan cara menutup modal Anda
+                    document
+                      .getElementById("welcomeModal")
+                      .classList.add("hidden");
+                    // atau jika menggunakan modal library tertentu:
+                    // $('#modalId').modal('hide');
+                  });
+              </script>
+            </div>
+
+            <div
+              class="px-3 py-1.5 sm:px-4 sm:py-2 my-3 sm:my-4 text-black bg-accent rounded-full font-bold text-xs sm:text-sm md:text-base shadow-lg animate-pulse text-center max-w-full mx-2"
+            >
+              Ayo Sukeskan PKL SMK Singaparna <br class="hidden sm:block" />
+              Tahun Pelajaran 2025-2026
+            </div>
+
+            <div
+              class="text-center text-white text-[10px] xs:text-xs mt-2 sm:mt-4 opacity-80"
+            >
+              Dibuat Oleh @ Riana Ali Nurdin, S.T
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // --- Welcome Modal Logic ---
+        const welcomeModal = document.getElementById("welcomeModal");
+        if (welcomeModal) {
+          setTimeout(() => {
+            welcomeModal.classList.remove("opacity-0", "pointer-events-none");
+            welcomeModal.classList.add("opacity-100", "pointer-events-auto");
+          }, 500);
+
+          const closeWelcomeModal = () => {
+            welcomeModal.classList.remove("opacity-100", "pointer-events-auto");
+            welcomeModal.classList.add("opacity-0", "pointer-events-none");
+          };
+
+          document
+            .getElementById("closeModalXBtn")
+            .addEventListener("click", closeWelcomeModal);
+          document
+            .getElementById("hubPembimbingBtn")
+            .addEventListener("click", closeWelcomeModal);
+          welcomeModal.addEventListener("click", (e) => {
+            if (e.target === welcomeModal) closeWelcomeModal();
+          });
+        }
+
+        // --- NEW: Report Selection Modal Logic ---
+        const reportModal = document.getElementById("reportModal");
+        const openReportModalBtn =
+          document.getElementById("openReportModalBtn");
+        const closeReportModalBtn = document.getElementById(
+          "closeReportModalBtn"
+        );
+        const reportModalOverlay =
+          document.getElementById("reportModalOverlay");
+
+        if (
+          reportModal &&
+          openReportModalBtn &&
+          closeReportModalBtn &&
+          reportModalOverlay
+        ) {
+          const openModal = () => reportModal.classList.add("active");
+          const closeModal = () => reportModal.classList.remove("active");
+
+          openReportModalBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            openModal();
+          });
+
+          closeReportModalBtn.addEventListener("click", closeModal);
+          reportModalOverlay.addEventListener("click", closeModal);
+        }
+      });
+    </script>
+
+    <!-- Sticky WhatsApp Button -->
+    <div class="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
+      <!-- Admin Login Button -->
+      <a
+        href="https://drive.google.com/drive/folders/18XXPIqOJCLd1_RGdToVSQ-tnFPD4AzXB"
+        class="bg-primary hover:bg-[#0b3a82] text-white font-bold py-3 px-3 rounded-full flex items-center justify-center shadow-lg animate-pulse-primary"
+        aria-label="Login Admin"
+      >
+        <i class="fas fa-user-shield text-2xl"></i>
+      </a>
+      <a
+        href="https://wa.me/6282315828091?text=Halo%20Admin%20PKL%20SMK%20Singaparna%2C%20saya%20ingin%20bertanya..."
+        target="_blank"
+        class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-3 rounded-full flex items-center justify-center shadow-lg animate-pulse"
+        aria-label="Hubungi via WhatsApp"
+      >
+        <i class="fab fa-whatsapp text-2xl"></i>
+      </a>
+    </div>
+
+    <script>
+      const menuToggle = document.getElementById("menu-toggle");
+      const menu = document.getElementById("menu");
+
+      if (menuToggle && menu) {
+        menuToggle.addEventListener("click", () => {
+          menu.classList.toggle("active");
+        });
+      }
+    </script>
+
+    <!-- NEW ELEGANT: Report Type Selection Modal -->
+    <div
+      id="reportModal"
+      class="fixed inset-0 z-[100] flex items-center justify-center transition-opacity duration-300 ease-in-out opacity-0 pointer-events-none"
+    >
+      <div
+        id="reportModalOverlay"
+        class="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-pointer"
+      ></div>
+
+      <!-- Modal Content -->
+      <div
+        id="reportModalContent"
+        class="relative bg-white w-full max-w-xl m-4 p-6 sm:p-8 rounded-2xl shadow-2xl transform scale-95 transition-all duration-300 ease-in-out"
+      >
+        <!-- Close Button -->
+        <button
+          id="closeReportModalBtn"
+          class="absolute top-4 right-4 w-9 h-9 bg-gray-900/10 hover:bg-gray-900/20 rounded-full flex items-center justify-center transition-colors z-10"
+          aria-label="Tutup Pilihan Laporan"
+        >
+          <i class="fas fa-times text-gray-800"></i>
+        </button>
+
+        <!-- Modal Header -->
+        <div class="text-center mb-6">
+          <h3 class="text-2xl font-bold text-gray-900">
+            Pilih Jenis Laporan PKL
+          </h3>
+          <p class="text-base text-gray-600 mt-1">
+            Lihat rekapitulasi absensi siswa PKL.
+          </p>
+        </div>
+
+        <!-- Card Selections -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <!-- Regular Report Card -->
+          <a
+            href="https://script.google.com/a/macros/guru.smk.belajar.id/s/AKfycbwsIdQmPpyBVzhbmcYWGIPgYRdzXh7WFUPE8H4dvtXmhvIWIp1UCBt4OKmbik5jTqUt/exec"
+            target="_blank"
+            class="report-card"
+            style="
+              background-image: url('https://blogger.googleusercontent.com/img/a/AVvXsEggs7d8YL1kLgAmNSjiiQXxR6kBL6KPhgrSWNBWyy8dDBIiF_ZREE8qu5ohyDZpvL5r7_7parzK_zesgRDRgaBdsMlNi2R6jk_V-9lxu_Y_ZtWa20jIEPx7-z5nZR5qfSbhW-BCv2F9XxbefbLIqLzm90qyrCFNgPtkeR-tjQMxGLaF1w22UeAzWnAMxno');
+            "
+          >
+            <div class="report-card-overlay">
+              <i class="fas fa-calendar-check report-card-icon"></i>
+              <span class="report-card-title">Laporan Regular</span>
+            </div>
+          </a>
+
+          <!-- Tambahan Report Card -->
+          <a
+            href="https://script.google.com/a/macros/guru.smk.belajar.id/s/AKfycbzAWLxzc7lrZ5vs8LN-V4bB3M070VchHRDr4MijBmw/dev"
+            target="_blank"
+            class="report-card"
+            style="
+              background-image: url('https://blogger.googleusercontent.com/img/a/AVvXsEhX62xvV5Xx5RgOc6XMz3TnMg8WuPslC61_CXwtXYENs98C7xaWy6C0_yax8CeeoSlt9Gn0ID4jDX3LWYHEi3Otbjs7eTvRdoTC0Y-2xMOgs4CeTKfmlosFe2MNIOX8TG1lfHW8hh2nVfi8Z2SuwimjKxaV0w4wcWVAfI8buNXlaZrQpqWBKd2-WQCYkvY');
+            "
+          >
+            <div class="report-card-overlay">
+              <i class="fas fa-layer-group report-card-icon"></i>
+              <span class="report-card-title">Laporan Tambahan</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Placeholder Image URLs: Ganti dengan URL gambar Anda yang sebenarnya -->
+    <!-- URL Gambar Regular: https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=2068&auto=format&fit=crop -->
+    <!-- URL Gambar Tambahan: https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop -->
+  </body>
+</html>
